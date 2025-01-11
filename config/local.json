@@ -1,9 +1,9 @@
 {
     "env": "local",
-    "http-server": {
+    "http_server": {
         "port": 28328
     },
-    "database": {
+    "postgres": {
         "dsn": "postgres://shorpy:shorpy@localhost:29329/shorpy"
     }
 }
