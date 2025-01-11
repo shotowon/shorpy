@@ -1,0 +1,16 @@
+services:
+  database:
+    image: postgres:alpine3.19
+    restart: always
+    ports:
+      - 29329:5432
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: shorpy
+      POSTGRES_USER: shorpy
+      POSTGRES_PASSWORD: shorpy
+
+volumes:
+  database:
