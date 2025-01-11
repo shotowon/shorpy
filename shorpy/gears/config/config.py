@@ -14,6 +14,8 @@ from pydantic import (
 
 from shorpy import BASE_DIR
 
+Env = Literal["local", "dev", "prod"]
+
 
 class PostgresSettings(BaseModel):
     dsn: PostgresDsn = Field(alias="dsn")
@@ -24,7 +26,7 @@ class HttpServerSettings(BaseModel):
 
 
 class Settings(BaseSettings):
-    env: Literal["local", "dev", "prod"]
+    env: Env
     postgres: PostgresSettings = Field(alias="postgres")
     http_server: HttpServerSettings = Field(alias="http_server")
 
