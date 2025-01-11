@@ -14,10 +14,10 @@
     },
     "filters": {
         "no_errors": {
-            "()": "gears.log.filters.NoErrors"
+            "()": "shorpy.gears.logs.filters.NoErrors"
         },
         "env": {
-            "()": "gears.log.filters.Env",
+            "()": "shorpy.gears.logs.filters.Env",
             "env": "prod"
         }
     },
