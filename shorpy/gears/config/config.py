@@ -52,7 +52,13 @@ def load() -> Settings | Exception:
         with open(configPath) as f:
             configData = json.load(f)
 
-            settings: Settings = Settings(**configData)
-            return settings
+    except FileNotFoundError as e:
+        return Exception("error: config file does not exist")
+    except json.decoder.JSONDecodeError:
+        return Exception("error: invalid json")
+
+    try:
+        settings: Settings = Settings(**configData)
+        return settings
     except ValidationError as e:
         return e
