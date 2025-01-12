@@ -4,6 +4,6 @@
         "port": 28328
     },
     "postgres": {
-        "dsn": "postgres://shorpy:shorpy@localhost:29329/shorpy"
+        "dsn": "postgresql+asyncpg://shorpy:shorpy@localhost:29329/shorpy"
     }
 }
