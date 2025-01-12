@@ -1,4 +1,4 @@
-from typing import AsyncGenerator
+from typing import AsyncContextManager
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -25,9 +25,8 @@ class DBGear:
             )
         )
 
-    async def get_session(self) -> AsyncGenerator[AsyncSession, None]:
-        async with self.session_maker() as session:
-            yield session
+    def get_session(self) -> AsyncContextManager[AsyncSession]:
+        return self.session_maker()
 
     async def dispose(self) -> None:
         await self.engine.dispose()
