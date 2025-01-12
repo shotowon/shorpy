@@ -1,10 +1,11 @@
 from typing import Literal
 from pathlib import Path
+from typing import Tuple
 import argparse
 import json
 import os
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import (
     BaseModel,
     Field,
@@ -26,12 +27,14 @@ class HttpServerSettings(BaseModel):
 
 
 class Settings(BaseSettings):
-    env: Env
+    model_config = SettingsConfigDict(env_prefix="shorpy_")
+
+    env: Env = Field(alias="env")
     postgres: PostgresSettings = Field(alias="postgres")
     http_server: HttpServerSettings = Field(alias="http_server")
 
 
-def load() -> Settings | Exception:
+def load() -> Tuple[Settings, Exception]:
     arg_parser = argparse.ArgumentParser(
         "shorpy",
         "run this REST API in the background",
@@ -46,19 +49,34 @@ def load() -> Settings | Exception:
         configPath = os.getenv("SHORPY_CONFIG_PATH")
 
     if configPath is None:
-        return Exception("error: config unspecified")
+        return (
+            None,
+            Exception("error: config unspecified"),
+        )
 
     try:
         with open(configPath) as f:
             configData = json.load(f)
 
     except FileNotFoundError as e:
-        return Exception("error: config file does not exist")
+        return (
+            None,
+            Exception("error: config file does not exist"),
+        )
     except json.decoder.JSONDecodeError:
-        return Exception("error: invalid json")
+        return (
+            None,
+            Exception("error: invalid json"),
+        )
 
     try:
         settings: Settings = Settings(**configData)
-        return settings
+        return (
+            settings,
+            None,
+        )
     except ValidationError as e:
-        return e
+        return (
+            None,
+            e,
+        )
