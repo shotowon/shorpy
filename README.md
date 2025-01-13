@@ -22,6 +22,7 @@ Response:
     302 Found: Redirects to the original URL if the alias exists.
     404 Not Found: Returns a JSON error response if the alias is not found.
 
+![](readme/redirect-demo.png)
 
 ### Save
 
@@ -37,6 +38,8 @@ Response:
     200 OK: Returns a success message with the alias of the saved URL.
     409 Conflict: Returns an error if the alias already exists in the database.
     500 Internal Server Error: Returns a generic error if something goes wrong during the save operation.
+
+![](readme/save-url-demo.png)
 
 ## Configuration
 
