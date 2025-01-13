@@ -25,7 +25,7 @@ app.include_router(router=router)
 def main():
     logger = logging.getLogger("main")
     logger.info(f"starting FastAPI server on port {cfg.http_server.port}")
-    uvicorn.run("shorpy.main:app", reload=True, port=cfg.http_server.port)
+    uvicorn.run("shorpy.main:app", host="0.0.0.0", port=cfg.http_server.port)
 
 
 if __name__ == "__main__":
