@@ -59,6 +59,21 @@ This section describes the configuration settings required for the application. 
 }
 ```
 
+## Migrations
+
+DSN is specified using `DB_URL` environment variable. So to run migrations with alembic, just do
+```bash
+export DB_URL=<your-dsn>
+```
+
+and you can just
+
+```bash
+alembic upgrade head
+```
+
+to setup your database and start working.
+
 ## Running
 
 ### Locally
