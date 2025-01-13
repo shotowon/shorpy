@@ -1,4 +1,5 @@
 from typing import Annotated
+import logging
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
@@ -36,6 +37,7 @@ async def save(
     url: SaveURL,
     session: Annotated[AsyncSession, Depends(get_db_session)],
 ) -> Response:
+    logger = logging.getLogger("url.save")
     alias = url.alias
     if alias is None:
         alias = rnd_str.new_random_string(6)
@@ -45,20 +47,24 @@ async def save(
             session=session, alias=alias, url=str(url.url)
         )
 
+        logger.info(f"new url with alias '{new_alias}' was saved")
         return JSONResponse(
             content={"message": f"new url with alias {new_alias} was added"},
             status_code=status.HTTP_200_OK,
         )
-    except IntegrityError:
-        session.rollback()
+    except IntegrityError as e:
+        logger.error(str(e))
+        await session.rollback()
         return JSONResponse(
             content={
                 "message": f"url with alias {alias} already exists, use other alias"
             },
             status_code=status.HTTP_409_CONFLICT,
         )
-    except Exception:
-        session.rollback()
+    except Exception as e:
+        logger.error(str(e))
+        await session.rollback()
+
         return JSONResponse(
             content={"message": "internal error"},
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

@@ -1,0 +1,9 @@
+{
+    "env": "dev",
+    "http_server": {
+        "port": 28328
+    },
+    "postgres": {
+        "dsn": "postgresql+asyncpg://shorpy:shorpy@database:5432/shorpy"
+    }
+}
